@@ -8,7 +8,7 @@ connected), while.lex file(This file contains the ml-lex code to create tokens),
 ### Running the Parser
 - First Place while_ast.sml , while.yacc, while.lex, makefile, loader.sml in the same directory along with the testfiles containing the while language code
 - open the terminal and go that directory where the files are placed
-- run make all command ( This will automatically enter the sml terminal)
+- run "make all" command ( This will automatically enter the sml terminal)
 - use "parser(filename);" and hit enter to create the AST of the program in file filename
 
 ## Context-free grammar
