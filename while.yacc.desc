@@ -1,0 +1,1418 @@
+
+state 0:
+
+	Start : . Program 
+
+	ProgramStart	shift 2
+
+	Start	goto 84
+	Program	goto 1
+
+	.	error
+
+
+state 1:
+
+	Start : Program .  (reduce by rule 0)
+
+
+
+	.	reduce by rule 0
+
+
+state 2:
+
+	Program : ProgramStart . Identifier DoubleColon Block 
+
+	Identifier	shift 3
+
+
+	.	error
+
+
+state 3:
+
+	Program : ProgramStart Identifier . DoubleColon Block 
+
+	DoubleColon	shift 4
+
+
+	.	error
+
+
+state 4:
+
+	Program : ProgramStart Identifier DoubleColon . Block 
+
+	VAR	shift 8
+
+	Block	goto 7
+	DecSeq	goto 6
+	Declaration	goto 5
+
+	.	reduce by rule 4
+
+
+state 5:
+
+	DecSeq : Declaration . DecSeq 
+
+	VAR	shift 8
+
+	DecSeq	goto 9
+	Declaration	goto 5
+
+	.	reduce by rule 4
+
+
+state 6:
+
+	Block : DecSeq . ComSeq 
+
+	LC	shift 11
+
+	ComSeq	goto 10
+
+	.	error
+
+
+state 7:
+
+	Program : ProgramStart Identifier DoubleColon Block .  (reduce by rule 1)
+
+
+
+	.	reduce by rule 1
+
+
+state 8:
+
+	Declaration : VAR . VariableList SingleColon Type SemiColon 
+
+	Identifier	shift 14
+
+	VariableList	goto 13
+	Variable	goto 12
+
+	.	error
+
+
+state 9:
+
+	DecSeq : Declaration DecSeq .  (reduce by rule 3)
+
+
+
+	.	reduce by rule 3
+
+
+state 10:
+
+	Block : DecSeq ComSeq .  (reduce by rule 2)
+
+
+
+	.	reduce by rule 2
+
+
+state 11:
+
+	ComSeq : LC . CommandContinue RC 
+
+	Identifier	shift 14
+	READ	shift 21
+	WRITE	shift 20
+	IF	shift 19
+	WHILE	shift 18
+
+	Variable	goto 17
+	Command	goto 16
+	CommandContinue	goto 15
+
+	.	reduce by rule 13
+
+
+state 12:
+
+	VariableList : Variable . Comma VariableList 
+	VariableList : Variable .  (reduce by rule 9)
+
+	Comma	shift 22
+
+
+	.	reduce by rule 9
+
+
+state 13:
+
+	Declaration : VAR VariableList . SingleColon Type SemiColon 
+
+	SingleColon	shift 23
+
+
+	.	error
+
+
+state 14:
+
+	Variable : Identifier .  (reduce by rule 10)
+
+
+
+	.	reduce by rule 10
+
+
+state 15:
+
+	ComSeq : LC CommandContinue . RC 
+
+	RC	shift 24
+
+
+	.	error
+
+
+state 16:
+
+	CommandContinue : Command . SemiColon CommandContinue 
+
+	SemiColon	shift 25
+
+
+	.	error
+
+
+state 17:
+
+	Command : Variable . Assign Exp 
+
+	Assign	shift 26
+
+
+	.	error
+
+
+state 18:
+
+	Command : WHILE . Exp DO ComSeq ENDWH 
+
+	Identifier	shift 14
+	Numeral	shift 35
+	LR	shift 34
+	NEG	shift 33
+	True	shift 32
+	False	shift 31
+	NOT	shift 30
+
+	Variable	goto 29
+	Exp	goto 28
+	ExpTerm	goto 27
+
+	.	error
+
+
+state 19:
+
+	Command : IF . Exp THEN ComSeq ELSE ComSeq ENDIF 
+
+	Identifier	shift 14
+	Numeral	shift 35
+	LR	shift 34
+	NEG	shift 33
+	True	shift 32
+	False	shift 31
+	NOT	shift 30
+
+	Variable	goto 29
+	Exp	goto 36
+	ExpTerm	goto 27
+
+	.	error
+
+
+state 20:
+
+	Command : WRITE . Exp 
+
+	Identifier	shift 14
+	Numeral	shift 35
+	LR	shift 34
+	NEG	shift 33
+	True	shift 32
+	False	shift 31
+	NOT	shift 30
+
+	Variable	goto 29
+	Exp	goto 37
+	ExpTerm	goto 27
+
+	.	error
+
+
+state 21:
+
+	Command : READ . Variable 
+
+	Identifier	shift 14
+
+	Variable	goto 38
+
+	.	error
+
+
+state 22:
+
+	VariableList : Variable Comma . VariableList 
+
+	Identifier	shift 14
+
+	VariableList	goto 39
+	Variable	goto 12
+
+	.	error
+
+
+state 23:
+
+	Declaration : VAR VariableList SingleColon . Type SemiColon 
+
+	BOOL	shift 42
+	INT	shift 41
+
+	Type	goto 40
+
+	.	error
+
+
+state 24:
+
+	ComSeq : LC CommandContinue RC .  (reduce by rule 11)
+
+
+
+	.	reduce by rule 11
+
+
+state 25:
+
+	CommandContinue : Command SemiColon . CommandContinue 
+
+	Identifier	shift 14
+	READ	shift 21
+	WRITE	shift 20
+	IF	shift 19
+	WHILE	shift 18
+
+	Variable	goto 17
+	Command	goto 16
+	CommandContinue	goto 43
+
+	.	reduce by rule 13
+
+
+state 26:
+
+	Command : Variable Assign . Exp 
+
+	Identifier	shift 14
+	Numeral	shift 35
+	LR	shift 34
+	NEG	shift 33
+	True	shift 32
+	False	shift 31
+	NOT	shift 30
+
+	Variable	goto 29
+	Exp	goto 44
+	ExpTerm	goto 27
+
+	.	error
+
+
+state 27:
+
+	Exp : ExpTerm .  (reduce by rule 35)
+
+
+
+	.	reduce by rule 35
+
+
+state 28:
+
+	Command : WHILE Exp . DO ComSeq ENDWH 
+	Exp : Exp . Add Exp 
+	Exp : Exp . Sub Exp 
+	Exp : Exp . Mul Exp 
+	Exp : Exp . Div Exp 
+	Exp : Exp . Mod Exp 
+	Exp : Exp . OR Exp 
+	Exp : Exp . AND Exp 
+	Exp : Exp . LT Exp 
+	Exp : Exp . LEQ Exp 
+	Exp : Exp . GT Exp 
+	Exp : Exp . GEQ Exp 
+	Exp : Exp . EQ Exp 
+	Exp : Exp . NEQ Exp 
+
+	LT	shift 58
+	GT	shift 57
+	LEQ	shift 56
+	GEQ	shift 55
+	NEQ	shift 54
+	EQ	shift 53
+	Add	shift 52
+	Sub	shift 51
+	Mul	shift 50
+	Div	shift 49
+	Mod	shift 48
+	OR	shift 47
+	AND	shift 46
+	DO	shift 45
+
+
+	.	error
+
+
+state 29:
+
+	ExpTerm : Variable .  (reduce by rule 37)
+
+
+
+	.	reduce by rule 37
+
+
+state 30:
+
+	Exp : NOT . Exp 
+
+	Identifier	shift 14
+	Numeral	shift 35
+	LR	shift 34
+	NEG	shift 33
+	True	shift 32
+	False	shift 31
+	NOT	shift 30
+
+	Variable	goto 29
+	Exp	goto 59
+	ExpTerm	goto 27
+
+	.	error
+
+
+state 31:
+
+	ExpTerm : False .  (reduce by rule 39)
+
+
+
+	.	reduce by rule 39
+
+
+state 32:
+
+	ExpTerm : True .  (reduce by rule 38)
+
+
+
+	.	reduce by rule 38
+
+
+state 33:
+
+	Exp : NEG . Exp 
+
+	Identifier	shift 14
+	Numeral	shift 35
+	LR	shift 34
+	NEG	shift 33
+	True	shift 32
+	False	shift 31
+	NOT	shift 30
+
+	Variable	goto 29
+	Exp	goto 60
+	ExpTerm	goto 27
+
+	.	error
+
+
+state 34:
+
+	Exp : LR . Exp RR 
+
+	Identifier	shift 14
+	Numeral	shift 35
+	LR	shift 34
+	NEG	shift 33
+	True	shift 32
+	False	shift 31
+	NOT	shift 30
+
+	Variable	goto 29
+	Exp	goto 61
+	ExpTerm	goto 27
+
+	.	error
+
+
+state 35:
+
+	ExpTerm : Numeral .  (reduce by rule 36)
+
+
+
+	.	reduce by rule 36
+
+
+state 36:
+
+	Command : IF Exp . THEN ComSeq ELSE ComSeq ENDIF 
+	Exp : Exp . Add Exp 
+	Exp : Exp . Sub Exp 
+	Exp : Exp . Mul Exp 
+	Exp : Exp . Div Exp 
+	Exp : Exp . Mod Exp 
+	Exp : Exp . OR Exp 
+	Exp : Exp . AND Exp 
+	Exp : Exp . LT Exp 
+	Exp : Exp . LEQ Exp 
+	Exp : Exp . GT Exp 
+	Exp : Exp . GEQ Exp 
+	Exp : Exp . EQ Exp 
+	Exp : Exp . NEQ Exp 
+
+	LT	shift 58
+	GT	shift 57
+	LEQ	shift 56
+	GEQ	shift 55
+	NEQ	shift 54
+	EQ	shift 53
+	Add	shift 52
+	Sub	shift 51
+	Mul	shift 50
+	Div	shift 49
+	Mod	shift 48
+	OR	shift 47
+	AND	shift 46
+	THEN	shift 62
+
+
+	.	error
+
+
+state 37:
+
+	Command : WRITE Exp .  (reduce by rule 16)
+	Exp : Exp . Add Exp 
+	Exp : Exp . Sub Exp 
+	Exp : Exp . Mul Exp 
+	Exp : Exp . Div Exp 
+	Exp : Exp . Mod Exp 
+	Exp : Exp . OR Exp 
+	Exp : Exp . AND Exp 
+	Exp : Exp . LT Exp 
+	Exp : Exp . LEQ Exp 
+	Exp : Exp . GT Exp 
+	Exp : Exp . GEQ Exp 
+	Exp : Exp . EQ Exp 
+	Exp : Exp . NEQ Exp 
+
+	LT	shift 58
+	GT	shift 57
+	LEQ	shift 56
+	GEQ	shift 55
+	NEQ	shift 54
+	EQ	shift 53
+	Add	shift 52
+	Sub	shift 51
+	Mul	shift 50
+	Div	shift 49
+	Mod	shift 48
+	OR	shift 47
+	AND	shift 46
+
+
+	.	reduce by rule 16
+
+
+state 38:
+
+	Command : READ Variable .  (reduce by rule 15)
+
+
+
+	.	reduce by rule 15
+
+
+state 39:
+
+	VariableList : Variable Comma VariableList .  (reduce by rule 8)
+
+
+
+	.	reduce by rule 8
+
+
+state 40:
+
+	Declaration : VAR VariableList SingleColon Type . SemiColon 
+
+	SemiColon	shift 63
+
+
+	.	error
+
+
+state 41:
+
+	Type : INT .  (reduce by rule 6)
+
+
+
+	.	reduce by rule 6
+
+
+state 42:
+
+	Type : BOOL .  (reduce by rule 7)
+
+
+
+	.	reduce by rule 7
+
+
+state 43:
+
+	CommandContinue : Command SemiColon CommandContinue .  (reduce by rule 12)
+
+
+
+	.	reduce by rule 12
+
+
+state 44:
+
+	Command : Variable Assign Exp .  (reduce by rule 14)
+	Exp : Exp . Add Exp 
+	Exp : Exp . Sub Exp 
+	Exp : Exp . Mul Exp 
+	Exp : Exp . Div Exp 
+	Exp : Exp . Mod Exp 
+	Exp : Exp . OR Exp 
+	Exp : Exp . AND Exp 
+	Exp : Exp . LT Exp 
+	Exp : Exp . LEQ Exp 
+	Exp : Exp . GT Exp 
+	Exp : Exp . GEQ Exp 
+	Exp : Exp . EQ Exp 
+	Exp : Exp . NEQ Exp 
+
+	LT	shift 58
+	GT	shift 57
+	LEQ	shift 56
+	GEQ	shift 55
+	NEQ	shift 54
+	EQ	shift 53
+	Add	shift 52
+	Sub	shift 51
+	Mul	shift 50
+	Div	shift 49
+	Mod	shift 48
+	OR	shift 47
+	AND	shift 46
+
+
+	.	reduce by rule 14
+
+
+state 45:
+
+	Command : WHILE Exp DO . ComSeq ENDWH 
+
+	LC	shift 11
+
+	ComSeq	goto 64
+
+	.	error
+
+
+state 46:
+
+	Exp : Exp AND . Exp 
+
+	Identifier	shift 14
+	Numeral	shift 35
+	LR	shift 34
+	NEG	shift 33
+	True	shift 32
+	False	shift 31
+	NOT	shift 30
+
+	Variable	goto 29
+	Exp	goto 65
+	ExpTerm	goto 27
+
+	.	error
+
+
+state 47:
+
+	Exp : Exp OR . Exp 
+
+	Identifier	shift 14
+	Numeral	shift 35
+	LR	shift 34
+	NEG	shift 33
+	True	shift 32
+	False	shift 31
+	NOT	shift 30
+
+	Variable	goto 29
+	Exp	goto 66
+	ExpTerm	goto 27
+
+	.	error
+
+
+state 48:
+
+	Exp : Exp Mod . Exp 
+
+	Identifier	shift 14
+	Numeral	shift 35
+	LR	shift 34
+	NEG	shift 33
+	True	shift 32
+	False	shift 31
+	NOT	shift 30
+
+	Variable	goto 29
+	Exp	goto 67
+	ExpTerm	goto 27
+
+	.	error
+
+
+state 49:
+
+	Exp : Exp Div . Exp 
+
+	Identifier	shift 14
+	Numeral	shift 35
+	LR	shift 34
+	NEG	shift 33
+	True	shift 32
+	False	shift 31
+	NOT	shift 30
+
+	Variable	goto 29
+	Exp	goto 68
+	ExpTerm	goto 27
+
+	.	error
+
+
+state 50:
+
+	Exp : Exp Mul . Exp 
+
+	Identifier	shift 14
+	Numeral	shift 35
+	LR	shift 34
+	NEG	shift 33
+	True	shift 32
+	False	shift 31
+	NOT	shift 30
+
+	Variable	goto 29
+	Exp	goto 69
+	ExpTerm	goto 27
+
+	.	error
+
+
+state 51:
+
+	Exp : Exp Sub . Exp 
+
+	Identifier	shift 14
+	Numeral	shift 35
+	LR	shift 34
+	NEG	shift 33
+	True	shift 32
+	False	shift 31
+	NOT	shift 30
+
+	Variable	goto 29
+	Exp	goto 70
+	ExpTerm	goto 27
+
+	.	error
+
+
+state 52:
+
+	Exp : Exp Add . Exp 
+
+	Identifier	shift 14
+	Numeral	shift 35
+	LR	shift 34
+	NEG	shift 33
+	True	shift 32
+	False	shift 31
+	NOT	shift 30
+
+	Variable	goto 29
+	Exp	goto 71
+	ExpTerm	goto 27
+
+	.	error
+
+
+state 53:
+
+	Exp : Exp EQ . Exp 
+
+	Identifier	shift 14
+	Numeral	shift 35
+	LR	shift 34
+	NEG	shift 33
+	True	shift 32
+	False	shift 31
+	NOT	shift 30
+
+	Variable	goto 29
+	Exp	goto 72
+	ExpTerm	goto 27
+
+	.	error
+
+
+state 54:
+
+	Exp : Exp NEQ . Exp 
+
+	Identifier	shift 14
+	Numeral	shift 35
+	LR	shift 34
+	NEG	shift 33
+	True	shift 32
+	False	shift 31
+	NOT	shift 30
+
+	Variable	goto 29
+	Exp	goto 73
+	ExpTerm	goto 27
+
+	.	error
+
+
+state 55:
+
+	Exp : Exp GEQ . Exp 
+
+	Identifier	shift 14
+	Numeral	shift 35
+	LR	shift 34
+	NEG	shift 33
+	True	shift 32
+	False	shift 31
+	NOT	shift 30
+
+	Variable	goto 29
+	Exp	goto 74
+	ExpTerm	goto 27
+
+	.	error
+
+
+state 56:
+
+	Exp : Exp LEQ . Exp 
+
+	Identifier	shift 14
+	Numeral	shift 35
+	LR	shift 34
+	NEG	shift 33
+	True	shift 32
+	False	shift 31
+	NOT	shift 30
+
+	Variable	goto 29
+	Exp	goto 75
+	ExpTerm	goto 27
+
+	.	error
+
+
+state 57:
+
+	Exp : Exp GT . Exp 
+
+	Identifier	shift 14
+	Numeral	shift 35
+	LR	shift 34
+	NEG	shift 33
+	True	shift 32
+	False	shift 31
+	NOT	shift 30
+
+	Variable	goto 29
+	Exp	goto 76
+	ExpTerm	goto 27
+
+	.	error
+
+
+state 58:
+
+	Exp : Exp LT . Exp 
+
+	Identifier	shift 14
+	Numeral	shift 35
+	LR	shift 34
+	NEG	shift 33
+	True	shift 32
+	False	shift 31
+	NOT	shift 30
+
+	Variable	goto 29
+	Exp	goto 77
+	ExpTerm	goto 27
+
+	.	error
+
+
+state 59:
+
+	Exp : Exp . Add Exp 
+	Exp : Exp . Sub Exp 
+	Exp : Exp . Mul Exp 
+	Exp : Exp . Div Exp 
+	Exp : Exp . Mod Exp 
+	Exp : Exp . OR Exp 
+	Exp : Exp . AND Exp 
+	Exp : NOT Exp .  (reduce by rule 28)
+	Exp : Exp . LT Exp 
+	Exp : Exp . LEQ Exp 
+	Exp : Exp . GT Exp 
+	Exp : Exp . GEQ Exp 
+	Exp : Exp . EQ Exp 
+	Exp : Exp . NEQ Exp 
+
+	Add	shift 52
+	Sub	shift 51
+	Mul	shift 50
+	Div	shift 49
+	Mod	shift 48
+
+
+	.	reduce by rule 28
+
+
+state 60:
+
+	Exp : Exp . Add Exp 
+	Exp : Exp . Sub Exp 
+	Exp : Exp . Mul Exp 
+	Exp : Exp . Div Exp 
+	Exp : Exp . Mod Exp 
+	Exp : NEG Exp .  (reduce by rule 25)
+	Exp : Exp . OR Exp 
+	Exp : Exp . AND Exp 
+	Exp : Exp . LT Exp 
+	Exp : Exp . LEQ Exp 
+	Exp : Exp . GT Exp 
+	Exp : Exp . GEQ Exp 
+	Exp : Exp . EQ Exp 
+	Exp : Exp . NEQ Exp 
+
+
+
+	.	reduce by rule 25
+
+
+state 61:
+
+	Exp : Exp . Add Exp 
+	Exp : Exp . Sub Exp 
+	Exp : Exp . Mul Exp 
+	Exp : Exp . Div Exp 
+	Exp : Exp . Mod Exp 
+	Exp : LR Exp . RR 
+	Exp : Exp . OR Exp 
+	Exp : Exp . AND Exp 
+	Exp : Exp . LT Exp 
+	Exp : Exp . LEQ Exp 
+	Exp : Exp . GT Exp 
+	Exp : Exp . GEQ Exp 
+	Exp : Exp . EQ Exp 
+	Exp : Exp . NEQ Exp 
+
+	RR	shift 78
+	LT	shift 58
+	GT	shift 57
+	LEQ	shift 56
+	GEQ	shift 55
+	NEQ	shift 54
+	EQ	shift 53
+	Add	shift 52
+	Sub	shift 51
+	Mul	shift 50
+	Div	shift 49
+	Mod	shift 48
+	OR	shift 47
+	AND	shift 46
+
+
+	.	error
+
+
+state 62:
+
+	Command : IF Exp THEN . ComSeq ELSE ComSeq ENDIF 
+
+	LC	shift 11
+
+	ComSeq	goto 79
+
+	.	error
+
+
+state 63:
+
+	Declaration : VAR VariableList SingleColon Type SemiColon .  (reduce by rule 5)
+
+
+
+	.	reduce by rule 5
+
+
+state 64:
+
+	Command : WHILE Exp DO ComSeq . ENDWH 
+
+	ENDWH	shift 80
+
+
+	.	error
+
+
+state 65:
+
+	Exp : Exp . Add Exp 
+	Exp : Exp . Sub Exp 
+	Exp : Exp . Mul Exp 
+	Exp : Exp . Div Exp 
+	Exp : Exp . Mod Exp 
+	Exp : Exp . OR Exp 
+	Exp : Exp . AND Exp 
+	Exp : Exp AND Exp .  (reduce by rule 27)
+	Exp : Exp . LT Exp 
+	Exp : Exp . LEQ Exp 
+	Exp : Exp . GT Exp 
+	Exp : Exp . GEQ Exp 
+	Exp : Exp . EQ Exp 
+	Exp : Exp . NEQ Exp 
+
+	Add	shift 52
+	Sub	shift 51
+	Mul	shift 50
+	Div	shift 49
+	Mod	shift 48
+
+
+	.	reduce by rule 27
+
+
+state 66:
+
+	Exp : Exp . Add Exp 
+	Exp : Exp . Sub Exp 
+	Exp : Exp . Mul Exp 
+	Exp : Exp . Div Exp 
+	Exp : Exp . Mod Exp 
+	Exp : Exp . OR Exp 
+	Exp : Exp OR Exp .  (reduce by rule 26)
+	Exp : Exp . AND Exp 
+	Exp : Exp . LT Exp 
+	Exp : Exp . LEQ Exp 
+	Exp : Exp . GT Exp 
+	Exp : Exp . GEQ Exp 
+	Exp : Exp . EQ Exp 
+	Exp : Exp . NEQ Exp 
+
+	Add	shift 52
+	Sub	shift 51
+	Mul	shift 50
+	Div	shift 49
+	Mod	shift 48
+
+
+	.	reduce by rule 26
+
+
+state 67:
+
+	Exp : Exp . Add Exp 
+	Exp : Exp . Sub Exp 
+	Exp : Exp . Mul Exp 
+	Exp : Exp . Div Exp 
+	Exp : Exp . Mod Exp 
+	Exp : Exp Mod Exp .  (reduce by rule 23)
+	Exp : Exp . OR Exp 
+	Exp : Exp . AND Exp 
+	Exp : Exp . LT Exp 
+	Exp : Exp . LEQ Exp 
+	Exp : Exp . GT Exp 
+	Exp : Exp . GEQ Exp 
+	Exp : Exp . EQ Exp 
+	Exp : Exp . NEQ Exp 
+
+	Div	shift 49
+
+
+	.	reduce by rule 23
+
+
+state 68:
+
+	Exp : Exp . Add Exp 
+	Exp : Exp . Sub Exp 
+	Exp : Exp . Mul Exp 
+	Exp : Exp . Div Exp 
+	Exp : Exp Div Exp .  (reduce by rule 22)
+	Exp : Exp . Mod Exp 
+	Exp : Exp . OR Exp 
+	Exp : Exp . AND Exp 
+	Exp : Exp . LT Exp 
+	Exp : Exp . LEQ Exp 
+	Exp : Exp . GT Exp 
+	Exp : Exp . GEQ Exp 
+	Exp : Exp . EQ Exp 
+	Exp : Exp . NEQ Exp 
+
+
+
+	.	reduce by rule 22
+
+
+state 69:
+
+	Exp : Exp . Add Exp 
+	Exp : Exp . Sub Exp 
+	Exp : Exp . Mul Exp 
+	Exp : Exp Mul Exp .  (reduce by rule 21)
+	Exp : Exp . Div Exp 
+	Exp : Exp . Mod Exp 
+	Exp : Exp . OR Exp 
+	Exp : Exp . AND Exp 
+	Exp : Exp . LT Exp 
+	Exp : Exp . LEQ Exp 
+	Exp : Exp . GT Exp 
+	Exp : Exp . GEQ Exp 
+	Exp : Exp . EQ Exp 
+	Exp : Exp . NEQ Exp 
+
+	Div	shift 49
+	Mod	shift 48
+
+
+	.	reduce by rule 21
+
+
+state 70:
+
+	Exp : Exp . Add Exp 
+	Exp : Exp . Sub Exp 
+	Exp : Exp Sub Exp .  (reduce by rule 20)
+	Exp : Exp . Mul Exp 
+	Exp : Exp . Div Exp 
+	Exp : Exp . Mod Exp 
+	Exp : Exp . OR Exp 
+	Exp : Exp . AND Exp 
+	Exp : Exp . LT Exp 
+	Exp : Exp . LEQ Exp 
+	Exp : Exp . GT Exp 
+	Exp : Exp . GEQ Exp 
+	Exp : Exp . EQ Exp 
+	Exp : Exp . NEQ Exp 
+
+	Mul	shift 50
+	Div	shift 49
+	Mod	shift 48
+
+
+	.	reduce by rule 20
+
+
+state 71:
+
+	Exp : Exp . Add Exp 
+	Exp : Exp Add Exp .  (reduce by rule 19)
+	Exp : Exp . Sub Exp 
+	Exp : Exp . Mul Exp 
+	Exp : Exp . Div Exp 
+	Exp : Exp . Mod Exp 
+	Exp : Exp . OR Exp 
+	Exp : Exp . AND Exp 
+	Exp : Exp . LT Exp 
+	Exp : Exp . LEQ Exp 
+	Exp : Exp . GT Exp 
+	Exp : Exp . GEQ Exp 
+	Exp : Exp . EQ Exp 
+	Exp : Exp . NEQ Exp 
+
+	Mul	shift 50
+	Div	shift 49
+	Mod	shift 48
+
+
+	.	reduce by rule 19
+
+
+state 72:
+
+	Exp : Exp . Add Exp 
+	Exp : Exp . Sub Exp 
+	Exp : Exp . Mul Exp 
+	Exp : Exp . Div Exp 
+	Exp : Exp . Mod Exp 
+	Exp : Exp . OR Exp 
+	Exp : Exp . AND Exp 
+	Exp : Exp . LT Exp 
+	Exp : Exp . LEQ Exp 
+	Exp : Exp . GT Exp 
+	Exp : Exp . GEQ Exp 
+	Exp : Exp . EQ Exp 
+	Exp : Exp EQ Exp .  (reduce by rule 33)
+	Exp : Exp . NEQ Exp 
+
+	Add	shift 52
+	Sub	shift 51
+	Mul	shift 50
+	Div	shift 49
+	Mod	shift 48
+	OR	shift 47
+	AND	shift 46
+
+
+	.	reduce by rule 33
+
+
+state 73:
+
+	Exp : Exp . Add Exp 
+	Exp : Exp . Sub Exp 
+	Exp : Exp . Mul Exp 
+	Exp : Exp . Div Exp 
+	Exp : Exp . Mod Exp 
+	Exp : Exp . OR Exp 
+	Exp : Exp . AND Exp 
+	Exp : Exp . LT Exp 
+	Exp : Exp . LEQ Exp 
+	Exp : Exp . GT Exp 
+	Exp : Exp . GEQ Exp 
+	Exp : Exp . EQ Exp 
+	Exp : Exp . NEQ Exp 
+	Exp : Exp NEQ Exp .  (reduce by rule 34)
+
+	Add	shift 52
+	Sub	shift 51
+	Mul	shift 50
+	Div	shift 49
+	Mod	shift 48
+	OR	shift 47
+	AND	shift 46
+
+
+	.	reduce by rule 34
+
+
+state 74:
+
+	Exp : Exp . Add Exp 
+	Exp : Exp . Sub Exp 
+	Exp : Exp . Mul Exp 
+	Exp : Exp . Div Exp 
+	Exp : Exp . Mod Exp 
+	Exp : Exp . OR Exp 
+	Exp : Exp . AND Exp 
+	Exp : Exp . LT Exp 
+	Exp : Exp . LEQ Exp 
+	Exp : Exp . GT Exp 
+	Exp : Exp . GEQ Exp 
+	Exp : Exp GEQ Exp .  (reduce by rule 32)
+	Exp : Exp . EQ Exp 
+	Exp : Exp . NEQ Exp 
+
+	Add	shift 52
+	Sub	shift 51
+	Mul	shift 50
+	Div	shift 49
+	Mod	shift 48
+	OR	shift 47
+	AND	shift 46
+
+
+	.	reduce by rule 32
+
+
+state 75:
+
+	Exp : Exp . Add Exp 
+	Exp : Exp . Sub Exp 
+	Exp : Exp . Mul Exp 
+	Exp : Exp . Div Exp 
+	Exp : Exp . Mod Exp 
+	Exp : Exp . OR Exp 
+	Exp : Exp . AND Exp 
+	Exp : Exp . LT Exp 
+	Exp : Exp . LEQ Exp 
+	Exp : Exp LEQ Exp .  (reduce by rule 30)
+	Exp : Exp . GT Exp 
+	Exp : Exp . GEQ Exp 
+	Exp : Exp . EQ Exp 
+	Exp : Exp . NEQ Exp 
+
+	Add	shift 52
+	Sub	shift 51
+	Mul	shift 50
+	Div	shift 49
+	Mod	shift 48
+	OR	shift 47
+	AND	shift 46
+
+
+	.	reduce by rule 30
+
+
+state 76:
+
+	Exp : Exp . Add Exp 
+	Exp : Exp . Sub Exp 
+	Exp : Exp . Mul Exp 
+	Exp : Exp . Div Exp 
+	Exp : Exp . Mod Exp 
+	Exp : Exp . OR Exp 
+	Exp : Exp . AND Exp 
+	Exp : Exp . LT Exp 
+	Exp : Exp . LEQ Exp 
+	Exp : Exp . GT Exp 
+	Exp : Exp GT Exp .  (reduce by rule 31)
+	Exp : Exp . GEQ Exp 
+	Exp : Exp . EQ Exp 
+	Exp : Exp . NEQ Exp 
+
+	Add	shift 52
+	Sub	shift 51
+	Mul	shift 50
+	Div	shift 49
+	Mod	shift 48
+	OR	shift 47
+	AND	shift 46
+
+
+	.	reduce by rule 31
+
+
+state 77:
+
+	Exp : Exp . Add Exp 
+	Exp : Exp . Sub Exp 
+	Exp : Exp . Mul Exp 
+	Exp : Exp . Div Exp 
+	Exp : Exp . Mod Exp 
+	Exp : Exp . OR Exp 
+	Exp : Exp . AND Exp 
+	Exp : Exp . LT Exp 
+	Exp : Exp LT Exp .  (reduce by rule 29)
+	Exp : Exp . LEQ Exp 
+	Exp : Exp . GT Exp 
+	Exp : Exp . GEQ Exp 
+	Exp : Exp . EQ Exp 
+	Exp : Exp . NEQ Exp 
+
+	Add	shift 52
+	Sub	shift 51
+	Mul	shift 50
+	Div	shift 49
+	Mod	shift 48
+	OR	shift 47
+	AND	shift 46
+
+
+	.	reduce by rule 29
+
+
+state 78:
+
+	Exp : LR Exp RR .  (reduce by rule 24)
+
+
+
+	.	reduce by rule 24
+
+
+state 79:
+
+	Command : IF Exp THEN ComSeq . ELSE ComSeq ENDIF 
+
+	ELSE	shift 81
+
+
+	.	error
+
+
+state 80:
+
+	Command : WHILE Exp DO ComSeq ENDWH .  (reduce by rule 18)
+
+
+
+	.	reduce by rule 18
+
+
+state 81:
+
+	Command : IF Exp THEN ComSeq ELSE . ComSeq ENDIF 
+
+	LC	shift 11
+
+	ComSeq	goto 82
+
+	.	error
+
+
+state 82:
+
+	Command : IF Exp THEN ComSeq ELSE ComSeq . ENDIF 
+
+	ENDIF	shift 83
+
+
+	.	error
+
+
+state 83:
+
+	Command : IF Exp THEN ComSeq ELSE ComSeq ENDIF .  (reduce by rule 17)
+
+
+
+	.	reduce by rule 17
+
+
+state 84:
+
+
+	EOF	accept
+
+
+	.	error
+
+164 of 393 action table entries left after compaction
+83 goto table entries
